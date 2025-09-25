@@ -1,8 +1,7 @@
 export interface UserInfo {
-  first_name: string;
-  last_name: string;
+  name: string;
+  username: string;
   email: string
   password: string;
-  country: string;
-  profile_pic_url: string;
+  profilePicCloudUrl: string;
 }

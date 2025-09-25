@@ -16,7 +16,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   endTimestamp,
   className = "",
 }) => {
-  const audioUrl = `data:audio/wav;base64,${audioStr}`;
+  // Check if audioStr is a URL or base64 data
+  const isUrl = audioStr.startsWith('http://') || audioStr.startsWith('https://');
+  const audioUrl = isUrl ? audioStr : `data:audio/wav;base64,${audioStr}`;
+  console.log("AudioPlayer initialized with:", { isUrl, audioStr: audioStr.substring(0, 100) + '...', audioUrl: audioUrl.substring(0, 100) + '...' });
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -25,31 +28,42 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  
+
   useEffect(() => {
     if (!audioRef.current) return;
     const audio = audioRef.current;
-    
+
+    console.log("AudioPlayer: Loading audio from", isUrl ? 'URL' : 'base64', audioUrl.substring(0, 100) + '...');
+
     audio.currentTime = startTimestamp;
-    
+
     const handleLoadedMetadata = () => {
+      console.log("AudioPlayer: Audio loaded successfully, duration:", audio.duration);
       setDuration(audio.duration);
       setLoading(false);
     };
-    
-    const handleError = () => {
+
+    const handleError = (e: any) => {
+      console.error("AudioPlayer: Error loading audio:", e, audio.error);
       setError(true);
       setLoading(false);
     };
-    
+
+    const handleCanPlay = () => {
+      console.log("AudioPlayer: Audio can play");
+      setLoading(false);
+    };
+
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('error', handleError);
-    
+    audio.addEventListener('canplay', handleCanPlay);
+
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('error', handleError);
+      audio.removeEventListener('canplay', handleCanPlay);
     };
-  }, [startTimestamp, audioStr]);
+  }, [startTimestamp, audioStr, audioUrl, isUrl]);
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -59,7 +73,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
   const handlePlayPause = () => {
     if (!audioRef.current || loading) return;
-    
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -135,7 +149,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
                 <Play className="h-5 w-5 ml-0.5" />
               )}
             </Button>
-            
+
             <div className="flex-1 space-y-1.5">
               <Slider
                 value={[currentTime / duration * 100 || 0]}
@@ -151,7 +165,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
                 <span>{formatTime(duration)}</span>
               </div>
             </div>
-            
+
             <div className="relative flex-shrink-0">
               <Button
                 variant="ghost"
@@ -167,9 +181,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
                   <Volume2 className="h-4 w-4 text-muted-foreground" />
                 )}
               </Button>
-              
+
               {showVolumeSlider && (
-                <div 
+                <div
                   className="absolute bottom-full mb-2 p-3 bg-card shadow-md rounded-lg w-32 right-0 z-10 border"
                   onMouseLeave={() => setShowVolumeSlider(false)}
                 >
@@ -187,13 +201,15 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
           </div>
         </>
       )}
-      
+
       <audio
         ref={audioRef}
         src={audioUrl}
+        crossOrigin={isUrl ? "anonymous" : undefined}
         onTimeUpdate={handleTimeUpdate}
         className="hidden"
         onEnded={() => setIsPlaying(false)}
+        preload="metadata"
       />
     </div>
   );

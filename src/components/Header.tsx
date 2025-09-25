@@ -131,7 +131,7 @@ const Header = ({ isAuthenticated = false }) => {
                       <>
                         <div className="py-2 my-2 border-t border-gray-100">
                           <div className="px-1 py-3">
-                            <p className="font-medium text-gray-900">{userInfo?.first_name} {userInfo?.last_name}</p>
+                            <p className="font-medium text-gray-900">{userInfo?.username}</p>
                             <p className="text-sm text-gray-500 truncate">{userInfo?.email}</p>
                           </div>
                         </div>
@@ -200,9 +200,9 @@ const Header = ({ isAuthenticated = false }) => {
                       className="flex items-center space-x-2 px-2 py-1 hover:bg-gray-100 rounded-full"
                     >
                       <Avatar className="h-8 w-8 border-2 border-primary/10">
-                        <AvatarImage src={userInfo?.profile_pic_url} alt={userInfo?.first_name} />
+                        <AvatarImage src={userInfo?.profilePicCloudUrl} alt={userInfo?.username} />
                         <AvatarFallback className="bg-primary/10 text-primary">
-                          {userInfo?.first_name?.charAt(0)}
+                          {userInfo?.name != undefined? userInfo.name.charAt(0).toUpperCase(): userInfo?.email.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       <ChevronDown size={16} className="text-gray-500 transition-transform duration-200" />
@@ -212,7 +212,7 @@ const Header = ({ isAuthenticated = false }) => {
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="font-medium text-gray-900">{userInfo?.first_name} {userInfo?.last_name}</p>
+                        <p className="font-medium text-gray-900">{userInfo?.name != null? userInfo.name: userInfo?.username}</p>
                         <p className="text-xs text-gray-500 truncate">{userInfo?.email}</p>
                       </div>
                     </DropdownMenuLabel>

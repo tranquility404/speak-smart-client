@@ -2,17 +2,19 @@ import { ReactNode, useEffect, useState } from 'react';
 
 import { Navigate, Outlet, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
+import AuthCallback from './components/AuthCallback';
 import Header from './components/Header';
 import { AnalysisReport } from './pages/analysis-report/AnalysisReport';
+import AnalysisRequestsList from './pages/AnalysisRequestsList';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegistrationPage';
 import ErrorPage from './pages/ErrorPage';
 import FeatureUnderDevelopment from './pages/FeatureUnderDevelopment';
 import LandingPage from './pages/LandingPage';
+import RecentAnalysisList from './pages/recent-analysis/RecentAnalysis';
 import SpeechGenerator from './pages/SpeechGenerator';
 import SpeechRefinement from './pages/SpeechRefinement';
-import RecentAnalysisList from './pages/recent-analysis/RecentAnalysis';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -50,8 +52,11 @@ const App = () => {
         <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/reset-password" element={<ForgotPasswordPage />} />
+        <Route path="/auth/code/google" element={<AuthCallback provider="google" setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/auth/code/github" element={<AuthCallback provider="github" setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/auth/code/linkedin" element={<AuthCallback provider="linkedin" setIsAuthenticated={setIsAuthenticated} />} />
 
-        <Route path="*" element={ <ErrorPage /> } />
+        <Route path="*" element={<ErrorPage />} />
 
         <Route element={
           <>
@@ -59,7 +64,7 @@ const App = () => {
             <Outlet />
           </>
         }>
-          
+
           {/* Public routes (for non-authenticated users) */}
 
           <Route path="/" element={<LandingPage />} />
@@ -93,6 +98,15 @@ const App = () => {
           />
 
           <Route
+            path="/analysis-request"
+            element={
+              <ProtectedRoute>
+                <AnalysisRequestsList />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
             path="/analysis-history/:id"
             element={
               <ProtectedRoute>
@@ -110,7 +124,7 @@ const App = () => {
             }
           />
 
-           <Route
+          <Route
             path="/practice-session"
             element={
               <ProtectedRoute>

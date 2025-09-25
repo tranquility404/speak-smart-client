@@ -1,4 +1,4 @@
-import { loadRecentAnalysis } from '@/api/apiRequests';
+import { getAnalysisHistory } from '@/api/apiRequests';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -18,48 +18,87 @@ import { ChevronDown, Filter, Search, SortDesc } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { AnalysisCard } from './AnalysisCard';
 
-export interface Analysis {
-    _id: string;
-    requested_by: string;
-    request_made_at: string;
-    analysis_report_url: string;
-    transcript: string;
-    speech_rate: string;
-    intonation: string;
-    energy: string;
-    confidence: string;
-    conversation_score: number;
+// New format types matching the API response
+export interface NewQuickResults {
+    duration_seconds: number;
+    average_wpm: number;
+    total_pauses: number;
+    energy_score: number;
+    intonation_score: number;
+    speech_rate_score: number;
+    pitch_variation: number;
+    average_energy: number;
+    pause_score: number;
+    intonation_chart_url: string | null;
+    overall_score: number;
+    speech_rate_chart_url: string | null;
+    transcription_preview?: string;
+    overall_feedback?: string | null;
+    ai_analysis_available?: boolean;
+    energy_chart_url?: string | null;
+}
+
+export interface NewAnalysisHistoryItem {
+    duration_seconds: number;
+    completed_at: string;
+    file_name: string;
+    quick_results: NewQuickResults;
+    request_id: string;
+    status: string;
+    requested_at: string;
+}
+
+export interface NewAnalysisHistory {
+    total: number;
+    size: number;
+    history: NewAnalysisHistoryItem[];
+    page: number;
+    has_more: boolean;
 }
 
 const RecentAnalysisList: React.FC = () => {
-    const [analysisList, setAnalysisList] = useState<Analysis[]>([]);
+    const [analysisList, setAnalysisList] = useState<NewAnalysisHistoryItem[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState("date");
     const [filterScore, setFilterScore] = useState("all");
+    // const [loading, setLoading] = useState(false);
+    const [page] = useState(0);  // Only using first page for now
+    // const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         const loadAnalysisHistory = async () => {
             try {
-                const res = await loadRecentAnalysis();
-                setAnalysisList(res.data);
+                // setLoading(true);
+                const res = await getAnalysisHistory(page, 20);
+                // Use new format directly
+                const newFormatData = res.data as NewAnalysisHistory;
+
+                if (page === 0) {
+                    setAnalysisList(newFormatData.history);
+                } else {
+                    setAnalysisList(prev => [...prev, ...newFormatData.history]);
+                }
+
+                // setHasMore(newFormatData.has_more);
             } catch (e) {
-                console.log(e);
+                console.log('Error loading analysis history:', e);
+            } finally {
+                // setLoading(false);
             }
         }
 
-        loadAnalysisHistory()
-    }, []);
-
-    // Filter and sort the analysis list
+        loadAnalysisHistory();
+    }, [page]);    // Filter and sort the analysis list
     const filteredAnalysisList = analysisList
         .filter(analysis => {
-            // Search filter
-            const matchesSearch = analysis.transcript.toLowerCase().includes(searchTerm.toLowerCase());
+            // Search filter - search in file name and transcription preview
+            const searchContent = (analysis.file_name + ' ' + (analysis.quick_results?.transcription_preview || '')).toLowerCase();
+            const matchesSearch = searchContent.includes(searchTerm.toLowerCase());
 
             // Score filter
             let matchesScoreFilter = true;
             if (filterScore !== "all") {
-                const score = analysis.conversation_score;
+                const score = analysis.quick_results?.overall_score || 0;
                 switch (filterScore) {
                     case "excellent":
                         matchesScoreFilter = score >= 80;
@@ -82,11 +121,11 @@ const RecentAnalysisList: React.FC = () => {
             // Sort options
             switch (sortBy) {
                 case "date":
-                    return new Date(b.request_made_at).getTime() - new Date(a.request_made_at).getTime();
+                    return new Date(b.requested_at).getTime() - new Date(a.requested_at).getTime();
                 case "score":
-                    return b.conversation_score - a.conversation_score;
+                    return (b.quick_results?.overall_score || 0) - (a.quick_results?.overall_score || 0);
                 case "transcript":
-                    return a.transcript.localeCompare(b.transcript);
+                    return a.file_name.localeCompare(b.file_name);
                 default:
                     return 0;
             }
