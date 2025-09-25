@@ -109,7 +109,7 @@ const AuthCallback: React.FC<AuthCallbackProps> = ({ provider, setIsAuthenticate
     }, []); // Empty dependency array to run only once
 
     if (isProcessing) {
-        const providerName = provider === 'google' ? 'Google' : 'GitHub';
+        const providerName = provider === 'google' ? 'Google' : provider === 'github'? 'GitHub': 'LinkedIn';
 
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">

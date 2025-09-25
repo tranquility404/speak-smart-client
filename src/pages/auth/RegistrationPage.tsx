@@ -32,14 +32,8 @@ const RegisterPage = () => {
     setIsLoading(true);
 
     try {
-      // Split the name into first and last name for backend compatibility
-      const nameParts = formData.name.trim().split(' ');
-      const firstName = nameParts[0] || '';
-      const lastName = nameParts.slice(1).join(' ') || '';
-
       await registerUser({
-        "first_name": firstName,
-        "last_name": lastName,
+        "name": formData.name,
         "email": formData.email,
         "password": formData.password
       })
