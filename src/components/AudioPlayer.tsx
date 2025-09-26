@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, Loader2, AlertCircle } from "lucide-react";
 import { Slider } from "./ui/slider";
 
 type AudioPlayerProps = {
@@ -123,34 +123,40 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   // };
 
   return (
-    <div className={`bg-card shadow-sm border rounded-lg p-4 ${className}`}>
+    <div className={`bg-gradient-to-r from-slate-50 to-gray-50 shadow-md border border-gray-200 rounded-xl p-5 transition-all hover:shadow-lg ${className}`}>
       {loading ? (
-        <div className="flex items-center justify-center h-16">
-          <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+        <div className="flex items-center justify-center h-16 bg-white rounded-lg">
+          <div className="flex items-center gap-3">
+            <Loader2 className="h-6 w-6 text-blue-500 animate-spin" />
+            <span className="text-sm font-medium text-gray-600">Loading audio...</span>
+          </div>
         </div>
       ) : error ? (
-        <div className="flex items-center justify-center h-16 text-destructive">
-          <p>Failed to load audio</p>
+        <div className="flex items-center justify-center h-16 bg-red-50 rounded-lg border border-red-200">
+          <div className="flex items-center gap-3 text-red-600">
+            <AlertCircle className="h-5 w-5" />
+            <p className="text-sm font-medium">Failed to load audio</p>
+          </div>
         </div>
       ) : (
         <>
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-4 mb-4">
             <Button
-              variant="secondary"
+              variant="default"
               size="icon"
-              className="h-10 w-10 rounded-full flex-shrink-0 shadow-sm hover:shadow"
+              className="h-12 w-12 rounded-full flex-shrink-0 shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
               onClick={handlePlayPause}
               disabled={loading}
               aria-label={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? (
-                <Pause className="h-5 w-5" />
+                <Pause className="h-6 w-6 text-white" />
               ) : (
-                <Play className="h-5 w-5 ml-0.5" />
+                <Play className="h-6 w-6 ml-0.5 text-white" />
               )}
             </Button>
 
-            <div className="flex-1 space-y-1.5">
+            <div className="flex-1 mt-auto">
               <Slider
                 value={[currentTime / duration * 100 || 0]}
                 min={0}
@@ -160,41 +166,47 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
                 className="cursor-pointer"
                 aria-label="Audio progress"
               />
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
+              <div className="flex justify-between text-xs font-medium text-gray-500">
+                <span className="bg-gray-100 px-2 py-1 rounded-md">{formatTime(currentTime)}</span>
+                <span className="bg-gray-100 px-2 py-1 rounded-md">{formatTime(duration)}</span>
               </div>
             </div>
 
             <div className="relative flex-shrink-0">
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="h-8 w-8 rounded-full"
+                className="h-10 w-10 rounded-full border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
                 onClick={() => setShowVolumeSlider(!showVolumeSlider)}
                 onMouseEnter={() => setShowVolumeSlider(true)}
                 aria-label="Volume control"
               >
                 {volume === 0 ? (
-                  <VolumeX className="h-4 w-4 text-muted-foreground" />
+                  <VolumeX className="h-4 w-4 text-gray-600" />
                 ) : (
-                  <Volume2 className="h-4 w-4 text-muted-foreground" />
+                  <Volume2 className="h-4 w-4 text-gray-600" />
                 )}
               </Button>
 
               {showVolumeSlider && (
                 <div
-                  className="absolute bottom-full mb-2 p-3 bg-card shadow-md rounded-lg w-32 right-0 z-10 border"
+                  className="absolute bottom-full mb-3 p-4 bg-white shadow-xl rounded-xl w-36 right-0 z-10 border border-gray-200"
                   onMouseLeave={() => setShowVolumeSlider(false)}
                 >
-                  <Slider
-                    value={[volume * 100]}
-                    min={0}
-                    max={100}
-                    step={1}
-                    onValueChange={handleVolumeChange}
-                    aria-label="Volume slider"
-                  />
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-gray-600">Volume</span>
+                      <span className="text-xs font-medium text-gray-800">{Math.round(volume * 100)}%</span>
+                    </div>
+                    <Slider
+                      value={[volume * 100]}
+                      min={0}
+                      max={100}
+                      step={1}
+                      onValueChange={handleVolumeChange}
+                      aria-label="Volume slider"
+                    />
+                  </div>
                 </div>
               )}
             </div>

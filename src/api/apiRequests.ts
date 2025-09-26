@@ -60,6 +60,11 @@ export function getAnalysisHistory(page: number = 0, size: number = 20): Promise
   return authApiClient.get(`/ai/analysis/history?page=${page}&size=${size}`);
 }
 
+// Delete analysis by request ID
+export function deleteAnalysis(requestId: string): Promise<{ data: any }> {
+  return authApiClient.delete(`/ai/analysis/${requestId}`);
+}
+
 // Legacy function for backward compatibility
 export function loadRecentAnalysis() {
   return getAnalysisHistory(0, 10);

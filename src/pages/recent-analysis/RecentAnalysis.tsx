@@ -1,4 +1,4 @@
-import { getAnalysisHistory } from '@/api/apiRequests';
+import { getAnalysisHistory, deleteAnalysis } from '@/api/apiRequests';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -88,7 +88,18 @@ const RecentAnalysisList: React.FC = () => {
         }
 
         loadAnalysisHistory();
-    }, [page]);    // Filter and sort the analysis list
+    }, [page]);
+
+    const handleDeleteAnalysis = async (requestId: string) => {
+        try {
+            await deleteAnalysis(requestId);
+            // Remove the deleted analysis from the local state
+            setAnalysisList(prev => prev.filter(analysis => analysis.request_id !== requestId));
+        } catch (error) {
+            console.error('Error deleting analysis:', error);
+            alert('Failed to delete analysis. Please try again.');
+        }
+    };    // Filter and sort the analysis list
     const filteredAnalysisList = analysisList
         .filter(analysis => {
             // Search filter - search in file name and transcription preview
@@ -196,7 +207,11 @@ const RecentAnalysisList: React.FC = () => {
             <div className="space-y-4">
                 {filteredAnalysisList.length > 0 ? (
                     filteredAnalysisList.map((analysis, index) => (
-                        <AnalysisCard key={index} analysis={analysis} />
+                        <AnalysisCard
+                            key={index}
+                            analysis={analysis}
+                            onDelete={handleDeleteAnalysis}
+                        />
                     ))
                 ) : (
                     <div className="text-center py-12 bg-gray-50 rounded-lg">

@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import HeroAnimation from '@/components/HeroAnimation';
 import { ArrowRight, Award, BarChart2, Brain, Clock, Mic, PlayCircle, Radio, Sparkles, ThumbsUp, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,23 +14,43 @@ const LandingPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
       {/* Hero Section */}
-      <header className="py-8 md:py-16 px-4 md:px-8 lg:px-16 flex flex-col items-center justify-center text-center">
-        <Badge className="mb-4 px-4 py-1 bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 rounded-full">
-          Hackathon Project
-        </Badge>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-          SpeakSmart<span className="text-blue-600">.</span>
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mb-8">
-          Transform your communication skills with AI-powered speech analysis and personalized improvement suggestions
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 rounded-lg" onClick={() => navigate("/speech-analyzer")}>
-            Start Practicing <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+      <header className="relative py-8 md:py-16 px-4 md:px-8 lg:px-16 flex flex-col items-center justify-center text-center overflow-hidden">
+        {/* Background Animation */}
+        <div className="absolute inset-0 z-0">
+          <HeroAnimation />
         </div>
-        <div className="text-gray-500 text-center pt-8">
-          Developed by Aman Verma
+
+        {/* Content Overlay */}
+        <div className="relative z-10 backdrop-blur-sm rounded-2xl px-8 py-12 border border-white/50">
+          <Badge className="mb-6 px-4 py-2 bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 rounded-full font-medium">
+            &lt; Tranquility &gt;
+          </Badge>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+            SpeakSmart<span className="text-blue-600">.</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mb-8 leading-relaxed">
+            Transform your communication skills with AI-powered speech analysis and personalized improvement suggestions
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+              onClick={() => navigate("/speech-analyzer")}
+            >
+              Start Practicing <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-2 border-blue-200 text-blue-700 hover:bg-blue-50 font-semibold px-8 py-3 rounded-xl transition-all duration-200"
+            >
+              <PlayCircle className="mr-2 h-5 w-5" />
+              Watch Demo
+            </Button>
+          </div>
+          <div className="text-gray-500 text-center pt-8 font-medium">
+            Developed by Aman Verma
+          </div>
         </div>
       </header>
 

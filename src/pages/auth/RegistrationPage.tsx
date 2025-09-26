@@ -141,6 +141,7 @@ const RegisterPage = () => {
                 <div className="flex justify-center gap-4">
                   <SocialLoginButton provider="google" disabled={isLoading} variant="icon" />
                   <SocialLoginButton provider="github" disabled={isLoading} variant="icon" />
+                  <SocialLoginButton provider="linkedin" disabled={isLoading} variant="icon" />
                 </div>
 
                 {/* Divider */}
