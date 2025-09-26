@@ -10,6 +10,7 @@ import {
   AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -21,9 +22,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
 import { UserInfo } from '@/types/userInfo';
-import { ChevronDown, History, LogIn, LogOut, Menu, Mic, Settings, User, Sparkles, BarChart3, MessageSquare, Target } from 'lucide-react';
+import { BarChart3, ChevronDown, History, LogIn, LogOut, MessageSquare, Mic, Settings, Sparkles, Target, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 

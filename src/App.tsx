@@ -15,7 +15,6 @@ import LandingPage from './pages/LandingPage';
 import RecentAnalysisList from './pages/recent-analysis/RecentAnalysis';
 import SpeechGenerator from './pages/SpeechGenerator';
 import SpeechRefinement from './pages/SpeechRefinement';
-import AnalysisLoadingScreen from './components/AnalysisLoadingScreen';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
