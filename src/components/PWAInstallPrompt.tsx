@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from './ui/button';
 import { Download, Smartphone, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Button } from './ui/button';
 
 interface PWAInstallProps {
     className?: string;
@@ -22,7 +22,7 @@ const PWAInstallPrompt: React.FC<PWAInstallProps> = ({ className = '' }) => {
         }
 
         // Listen for PWA install availability
-        const handleInstallable = (event: CustomEvent) => {
+        const handleInstallable = () => {
             setIsInstallable(true);
             setTimeout(() => setShowPrompt(true), 3000); // Show prompt after 3 seconds
         };
