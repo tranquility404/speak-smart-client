@@ -15,6 +15,7 @@ import LandingPage from './pages/LandingPage';
 import RecentAnalysisList from './pages/recent-analysis/RecentAnalysis';
 import SpeechGenerator from './pages/SpeechGenerator';
 import SpeechRefinement from './pages/SpeechRefinement';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -62,6 +63,7 @@ const App = () => {
           <>
             <Header isAuthenticated={isAuthenticated} />
             <Outlet />
+            <PWAInstallPrompt />
           </>
         }>
 

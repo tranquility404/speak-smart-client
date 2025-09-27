@@ -1,13 +1,190 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SpeakSmart</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Basic SEO Meta Tags -->
+  <title>SpeakSmart - AI-Powered Speech Analysis & Improvement Platform</title>
+  <meta name="description"
+    content="Improve your speaking skills with SpeakSmart's AI-powered voice analysis. Get detailed feedback on speech rate, intonation, energy, and more. Perfect for presentations, interviews, and public speaking." />
+  <meta name="keywords"
+    content="speech analysis, voice coaching, AI speech feedback, presentation skills, public speaking, voice improvement, speech rate, intonation analysis, communication skills" />
+  <meta name="author" content="Aman Verma" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+
+  <!-- Project Information -->
+  <meta name="application-name" content="SpeakSmart" />
+  <meta name="theme-color" content="#3B82F6" />
+  <meta name="msapplication-TileColor" content="#3B82F6" />
+
+  <!-- PWA Meta Tags for Add to Home Screen -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="SpeakSmart" />
+  <meta name="msapplication-starturl" content="/" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, viewport-fit=cover" />
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Developer Information -->
+  <meta name="developer" content="Aman Verma" />
+  <meta name="contact" content="amanverma404403@gmail.com" />
+  <meta name="version" content="1.0.0" />
+  <meta name="build-date" content="2025" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://speak-smart.app/" />
+  <meta property="og:title" content="SpeakSmart - AI-Powered Speech Analysis Platform" />
+  <meta property="og:description"
+    content="Transform your speaking skills with AI-powered voice analysis. Get instant feedback on speech patterns, improve your presentation skills, and become a confident speaker." />
+  <meta property="og:image" content="https://speak-smart.app/logo.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="SpeakSmart" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://speak-smart.app/" />
+  <meta property="twitter:title" content="SpeakSmart - AI-Powered Speech Analysis" />
+  <meta property="twitter:description"
+    content="Improve your speaking skills with AI-powered voice analysis. Get detailed feedback and become a confident speaker." />
+  <meta property="twitter:image" content="https://speak-smart.app/logo.png" />
+  <meta property="twitter:creator" content="@amanverma" />
+
+  <!-- Additional Meta Tags -->
+  <meta name="rating" content="General" />
+  <meta name="distribution" content="Global" />
+  <meta name="revisit-after" content="7 Days" />
+  <meta name="expires" content="never" />
+  <meta name="copyright" content="© 2025 Aman Verma. All rights reserved." />
+
+  <!-- Favicon and Icons -->
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="shortcut icon" href="/logo.png" />
+
+  <!-- Preconnect for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SpeakSmart",
+      "description": "AI-powered speech analysis and improvement platform for better communication skills",
+      "url": "https://speak-smart.app",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "author": {
+        "@type": "Person",
+        "name": "Aman Verma"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Aman Verma"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "screenshot": "https://speak-smart.app/logo.png",
+      "softwareVersion": "1.0.0",
+      "datePublished": "2025",
+      "inLanguage": "en-US",
+      "isAccessibleForFree": true
+    }
+    </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    // Register service worker for PWA functionality
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+
+            // Check for updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New content is available, prompt user to refresh
+                    if (confirm('New version available! Refresh to update?')) {
+                      window.location.reload();
+                    }
+                  }
+                });
+              }
+            });
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+
+    // Add to Home Screen prompt for PWA
+    let deferredPrompt;
+    let installButton = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('Add to Home Screen prompt available');
+      e.preventDefault();
+      deferredPrompt = e;
+
+      // Show custom install button (you can style this in your React components)
+      if (installButton) {
+        installButton.style.display = 'block';
+      }
+
+      // Dispatch custom event that your React app can listen to
+      window.dispatchEvent(new CustomEvent('pwa-installable', { detail: { prompt: deferredPrompt } }));
+    });
+
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('SpeakSmart was installed successfully');
+      // Hide install button
+      if (installButton) {
+        installButton.style.display = 'none';
+      }
+
+      // Dispatch custom event
+      window.dispatchEvent(new CustomEvent('pwa-installed'));
+    });
+
+    // Function to trigger install prompt (call this from your React components)
+    window.installPWA = function () {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          } else {
+            console.log('User dismissed the install prompt');
+          }
+          deferredPrompt = null;
+        });
+      }
+    };
+  </script>
+</body>
+
 </html>
