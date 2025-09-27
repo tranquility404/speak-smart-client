@@ -182,7 +182,7 @@ export function AnalysisReport({ type }: { type: "live" | "old" }) {
     if (!analysis) return null;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 py-2 sm:py-6 px-2 sm:px-4">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-slate-100 py-2 sm:py-6 px-2 md:w-[60%] md:mx-auto">
             <Card className="w-full mx-auto shadow-xl border-0 overflow-hidden">
                 <CardHeader className="bg-white border-b border-gray-200 py-3 sm:py-6 px-3 sm:px-6">
                     <div className="flex flex-col gap-2 sm:gap-4">
