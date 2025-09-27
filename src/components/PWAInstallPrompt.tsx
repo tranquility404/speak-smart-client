@@ -21,10 +21,22 @@ const PWAInstallPrompt: React.FC<PWAInstallProps> = ({ className = '' }) => {
             return;
         }
 
+        // Check if user came from install link
+        const urlParams = new URLSearchParams(window.location.search);
+        const shouldInstall = urlParams.get('install') === 'true';
+
         // Listen for PWA install availability
         const handleInstallable = () => {
             setIsInstallable(true);
-            setTimeout(() => setShowPrompt(true), 3000); // Show prompt after 3 seconds
+            // Show prompt immediately if came from install link, otherwise wait 3 seconds
+            if (shouldInstall) {
+                setShowPrompt(true);
+                // Remove the parameter from URL for cleaner experience
+                const newUrl = window.location.href.replace(/[?&]install=true/, '');
+                window.history.replaceState({}, document.title, newUrl);
+            } else {
+                setTimeout(() => setShowPrompt(true), 3000);
+            }
         };
 
         const handleInstalled = () => {
@@ -60,8 +72,12 @@ const PWAInstallPrompt: React.FC<PWAInstallProps> = ({ className = '' }) => {
         return null;
     }
 
-    // Don't show if previously dismissed in this session
-    if (sessionStorage.getItem('pwa-prompt-dismissed')) {
+    // Check if user came from install link - if so, always show
+    const urlParams = new URLSearchParams(window.location.search);
+    const cameFromInstallLink = urlParams.get('install') === 'true';
+
+    // Don't show if previously dismissed in this session (unless from install link)
+    if (!cameFromInstallLink && sessionStorage.getItem('pwa-prompt-dismissed')) {
         return null;
     }
 
