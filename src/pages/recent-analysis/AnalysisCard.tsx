@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { Activity, Award, BarChart3, ChevronRight, Mic, Volume2, Trash2, Calendar, Clock } from "lucide-react";
+import { Activity, Award, BarChart3, Calendar, ChevronRight, Mic, Trash2, Volume2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewAnalysisHistoryItem } from "./RecentAnalysis";
 
