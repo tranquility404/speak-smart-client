@@ -64,50 +64,50 @@ export const AnalysisCard: React.FC<{
     };
 
     return (
-        <Card className="w-full shadow-lg hover:shadow-xl transition-all duration-300 mb-4 border-0 bg-gradient-to-br from-white to-gray-50/50 hover:from-white hover:to-blue-50/30">
-            <CardHeader className="-mb-2">
-                <div className="flex justify-between items-start">
-                    <div className="space-y-1">
-                        <CardTitle className="text-lg font-semibold text-gray-800 leading-tight">
+        <Card className="w-[98%] mx-1 shadow-lg hover:shadow-xl transition-all duration-300 mb-3 sm:mb-4 border-0 bg-gradient-to-br from-white to-gray-50/50 hover:from-white hover:to-blue-50/30">
+            <CardHeader className="-mb-3 px-3 sm:px-6">
+                <div className="flex justify-between items-start gap-3">
+                    <div className="space-y-1 flex-1 min-w-0">
+                        <CardTitle className="text-sm sm:text-lg font-semibold text-gray-800 leading-tight truncate">
                             {analysis.file_name}
                         </CardTitle>
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
                             <Calendar className="h-3 w-3" />
                             <span>{timeAgo}</span>
-                            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-                            <Clock className="h-3 w-3" />
-                            <span>ID: {analysis.request_id.slice(-8)}</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-shrink-0">
                         <Badge
                             variant={getBadgeVariant(getScoreCategory(overallScore)) as any}
-                            className="font-medium"
+                            className="font-medium text-xs sm:text-sm"
                         >
-                            {Math.round(overallScore)}% Overall
+                            <span className="sm:hidden">{getScoreCategory(overallScore).charAt(0).toUpperCase() + getScoreCategory(overallScore).slice(1)}</span>
+                            <span className="hidden sm:inline">{Math.round(overallScore)}% Overall</span>
                         </Badge>
                     </div>
                 </div>
             </CardHeader>
 
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6">
                 {/* Overall Score Highlight */}
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-2.5 border border-blue-100">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-2 sm:p-2.5 border border-blue-100">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <div className="p-1 bg-blue-100 rounded-md">
-                                <Award className="h-4 w-4 text-blue-600" />
+                                <Award className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
                             </div>
                             <div>
-                                <h3 className="font-semibold text-gray-800 text-sm leading-tight">Overall Performance</h3>
-                                <p className="text-xs text-gray-600">Your speech analysis score</p>
+                                <h3 className="font-semibold text-gray-800 text-xs sm:text-sm leading-tight">
+                                    <span>Overall Performance</span>
+                                </h3>
+                                <p className="text-xs text-gray-600 hidden sm:block">Your speech analysis score</p>
                             </div>
                         </div>
                         <div className="text-right">
-                            <div className={`text-2xl font-bold leading-none ${getScoreColor(overallScore)}`}>
+                            <div className={`text-xl sm:text-2xl font-bold leading-none ${getScoreColor(overallScore)}`}>
                                 {Math.round(overallScore)}%
                             </div>
-                            <Badge variant={getBadgeVariant(getScoreCategory(overallScore)) as any} className="text-xs mt-0.5">
+                            <Badge variant={getBadgeVariant(getScoreCategory(overallScore)) as any} className="text-xs mt-0.5 hidden sm:inline">
                                 {getScoreCategory(overallScore).charAt(0).toUpperCase() + getScoreCategory(overallScore).slice(1)}
                             </Badge>
                         </div>
@@ -115,11 +115,11 @@ export const AnalysisCard: React.FC<{
                 </div>
 
                 {/* Compact Metrics Row */}
-                <div className="flex justify-evenly items-center gap-2 bg-gray-50 rounded-lg p-2.5 -mb-7">
+                <div className="flex justify-evenly items-center gap-1 sm:gap-2 bg-gray-50 rounded-lg px-2 pt-2 sm:px-2.5 -mb-4">
                     {/* Speech Rate */}
                     <div className="flex flex-col items-center">
-                        <div className="relative w-12 h-12 mb-1">
-                            <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 mb-1">
+                            <svg className="w-10 h-10 sm:w-12 sm:h-12 transform -rotate-90" viewBox="0 0 36 36">
                                 <path
                                     className="text-gray-200"
                                     stroke="currentColor"
@@ -142,18 +142,21 @@ export const AnalysisCard: React.FC<{
                             </div>
                         </div>
                         <div className="text-center">
-                            <div className="flex items-center gap-1 text-emerald-600 mb-0.5">
+                            <div className="flex items-center gap-0.5 sm:gap-1 text-emerald-600 mb-0.5">
                                 <BarChart3 className="h-3 w-3" />
                                 <span className="text-xs font-medium">Rate</span>
                             </div>
-                            <span className="text-xs text-gray-500 leading-none">{Math.round(averageWpm)} wpm</span>
+                            <span className="text-xs text-gray-500 leading-none">
+                                <span className="sm:hidden">{Math.round(averageWpm)}</span>
+                                <span className="hidden sm:inline">{Math.round(averageWpm)} wpm</span>
+                            </span>
                         </div>
                     </div>
 
                     {/* Intonation */}
                     <div className="flex flex-col items-center">
-                        <div className="relative w-12 h-12 mb-1">
-                            <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 mb-1">
+                            <svg className="w-10 h-10 sm:w-12 sm:h-12 transform -rotate-90" viewBox="0 0 36 36">
                                 <path
                                     className="text-gray-200"
                                     stroke="currentColor"
@@ -176,18 +179,21 @@ export const AnalysisCard: React.FC<{
                             </div>
                         </div>
                         <div className="text-center">
-                            <div className="flex items-center gap-1 text-purple-600 mb-0.5">
+                            <div className="flex items-center gap-0.5 sm:gap-1 text-purple-600 mb-0.5">
                                 <Activity className="h-3 w-3" />
                                 <span className="text-xs font-medium">Tone</span>
                             </div>
-                            <span className="text-xs text-gray-500 leading-none">Variation</span>
+                            <span className="text-xs text-gray-500 leading-none">
+                                <span className="sm:hidden">Var</span>
+                                <span className="hidden sm:inline">Variation</span>
+                            </span>
                         </div>
                     </div>
 
                     {/* Energy */}
                     <div className="flex flex-col items-center">
-                        <div className="relative w-12 h-12 mb-1">
-                            <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 mb-1">
+                            <svg className="w-10 h-10 sm:w-12 sm:h-12 transform -rotate-90" viewBox="0 0 36 36">
                                 <path
                                     className="text-gray-200"
                                     stroke="currentColor"
@@ -210,7 +216,7 @@ export const AnalysisCard: React.FC<{
                             </div>
                         </div>
                         <div className="text-center">
-                            <div className="flex items-center gap-1 text-orange-600 mb-0.5">
+                            <div className="flex items-center gap-0.5 sm:gap-1 text-orange-600 mb-0.5">
                                 <Volume2 className="h-3 w-3" />
                                 <span className="text-xs font-medium">Energy</span>
                             </div>
@@ -220,8 +226,8 @@ export const AnalysisCard: React.FC<{
 
                     {/* Confidence */}
                     <div className="flex flex-col items-center">
-                        <div className="relative w-12 h-12 mb-1">
-                            <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 mb-1">
+                            <svg className="w-10 h-10 sm:w-12 sm:h-12 transform -rotate-90" viewBox="0 0 36 36">
                                 <path
                                     className="text-gray-200"
                                     stroke="currentColor"
@@ -244,23 +250,27 @@ export const AnalysisCard: React.FC<{
                             </div>
                         </div>
                         <div className="text-center">
-                            <div className="flex items-center gap-1 text-indigo-600 mb-0.5">
+                            <div className="flex items-center gap-0.5 sm:gap-1 text-indigo-600 mb-0.5">
                                 <Mic className="h-3 w-3" />
                                 <span className="text-xs font-medium">Flow</span>
                             </div>
-                            <span className="text-xs text-gray-500 leading-none">{totalPauses} pauses</span>
+                            <span className="text-xs text-gray-500 leading-none">
+                                <span className="sm:hidden">{totalPauses}</span>
+                                <span className="hidden sm:inline">{totalPauses} pauses</span>
+                            </span>
                         </div>
                     </div>
                 </div>
             </CardContent>
 
-            <CardFooter className="flex justify-between items-center border-t border-gray-100">
+            <CardFooter className="flex justify-between items-center border-t border-gray-100 px-3 sm:px-6">
                 <Button
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 mr-2 h-8"
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 mr-2 h-8 text-xs sm:text-sm"
                     onClick={handleViewDetails}
                 >
                     <ChevronRight className="h-4 w-4 mr-1" />
-                    View Detailed Analysis
+                    <span className="sm:hidden">View Details</span>
+                    <span className="hidden sm:inline">View Detailed Analysis</span>
                 </Button>
                 <Button
                     variant="outline"

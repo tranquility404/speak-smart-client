@@ -72,14 +72,17 @@ export function VoiceParams({ type, data, label, unit }: VoiceCardProps) {
     if (!data) {
         return (
             <Card className="h-full bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200">
-                <CardContent className="flex items-center justify-center h-full p-4">
-                    <div className="text-center space-y-2">
-                        <div className="p-2 bg-gray-100 inline-flex rounded-md">
-                            <Info className="h-5 w-5 text-gray-500" />
+                <CardContent className="flex items-center justify-center h-full p-2 sm:p-4">
+                    <div className="text-center space-y-1 sm:space-y-2">
+                        <div className="p-1.5 sm:p-2 bg-gray-100 inline-flex rounded-md">
+                            <Info className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500" />
                         </div>
                         <div>
-                            <p className="text-gray-700 font-medium text-sm">Not Enough Data</p>
-                            <p className="text-gray-500 text-xs">Insufficient audio data</p>
+                            <p className="text-gray-700 font-medium text-xs sm:text-sm">
+                                <span className="sm:hidden">No Data</span>
+                                <span className="hidden sm:inline">Not Enough Data</span>
+                            </p>
+                            <p className="text-gray-500 text-xs hidden sm:block">Insufficient audio data</p>
                         </div>
                     </div>
                 </CardContent>
@@ -99,37 +102,37 @@ export function VoiceParams({ type, data, label, unit }: VoiceCardProps) {
 
     return (
         <Card className={`h-full transition-all hover:shadow-md duration-200`}>
-            <CardHeader className="px-4 py-3 flex flex-row items-center gap-3">
-                <div className={`p-1.5 rounded-md ${getIconColor(metric.score)}`}>
-                    <IconComponent className="h-4 w-4" />
+            <CardHeader className="px-4 -my-2 sm:my-0 sm:py-3 flex flex-row items-center gap-2 sm:gap-3">
+                <div className={`p-1 sm:p-1.5 rounded-md ${getIconColor(metric.score)}`}>
+                    <IconComponent className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
-                <CardTitle className="text-base font-semibold text-gray-800">
+                <CardTitle className="text-sm sm:text-base font-semibold text-gray-800 flex-1 min-w-0">
                     {label}
                 </CardTitle>
                 <Badge
                     variant={metric.score >= 70 ? "success" : metric.score >= 50 ? "warning" : "destructive"}
-                    className="capitalize text-xs font-medium ml-auto"
+                    className="capitalize text-xs font-medium ml-auto flex-shrink-0"
                 >
                     {metric.category}
                 </Badge>
             </CardHeader>
 
-            <CardContent className="px-4 py-3 space-y-3">
+            <CardContent className="px-4 sm:py-3 space-y-2 sm:space-y-3">
                 {/* Compact Score and Progress */}
-                <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-end gap-2">
-                        <span className={`text-2xl font-bold ${getScoreColor(metric.score)}`}>
+                <div className="flex items-center justify-between mb-1 sm:mb-2">
+                    <div className="flex items-end gap-1 sm:gap-2">
+                        <span className={`text-lg sm:text-2xl font-bold ${getScoreColor(metric.score)}`}>
                             {displayValue}
                         </span>
-                        <span className="text-xs text-gray-500 mb-1">{unit}</span>
+                        <span className="text-xs text-gray-500 mb-0.5 sm:mb-1">{unit}</span>
                     </div>
-                    <span className={`text-sm font-semibold ${getScoreColor(metric.score)}`}>
+                    <span className={`text-xs sm:text-sm font-semibold ${getScoreColor(metric.score)}`}>
                         {metric.score.toFixed(0)}%
                     </span>
                 </div>
 
                 <ProgressPrimitive.Root
-                    className="relative h-2 w-full overflow-hidden rounded-full bg-gray-200/60"
+                    className="relative h-1.5 sm:h-2 w-full overflow-hidden rounded-full bg-gray-200/60"
                     value={metric.score}
                 >
                     <ProgressPrimitive.Indicator
@@ -140,26 +143,29 @@ export function VoiceParams({ type, data, label, unit }: VoiceCardProps) {
 
                 {/* AI Feedback Section */}
                 <div
-                    className="flex items-center justify-between cursor-pointer p-2 hover:bg-white/30 rounded-md transition-colors duration-150"
+                    className="flex mt-6 items-center justify-between cursor-pointer sm:p-2 hover:bg-white/30 rounded-md transition-colors duration-150"
                     onClick={() => setIsExpanded(prev => !prev)}
                     role="button"
                     aria-expanded={isExpanded}
                     tabIndex={0}
                 >
-                    <div className="flex items-center gap-2">
-                        <Info className="h-4 w-4 text-blue-600" />
-                        <p className="text-sm font-medium text-gray-700">AI Feedback</p>
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Info className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
+                        <p className="text-xs sm:text-sm font-medium text-gray-700">
+                            <span className="sm:hidden">Feedback</span>
+                            <span className="hidden sm:inline">AI Feedback</span>
+                        </p>
                     </div>
                     {isExpanded ? (
-                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                        <ChevronUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-500" />
                     ) : (
-                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                        <ChevronDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-500" />
                     )}
                 </div>
 
                 {isExpanded && (
-                    <div className="bg-white/50 p-3 rounded-md border border-white/30">
-                        <p className="text-sm text-gray-700 leading-relaxed">
+                    <div className="bg-white/50 pt-1 px-2 sm:p-3 rounded-md border border-white/30">
+                        <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                             {metric.feedback}
                         </p>
                     </div>
