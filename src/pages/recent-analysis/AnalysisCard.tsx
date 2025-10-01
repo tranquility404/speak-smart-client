@@ -1,15 +1,30 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Progress } from "@/components/ui/progress";
 import { formatDistanceToNow } from "date-fns";
-import { Activity, Award, BarChart3, Calendar, ChevronRight, Mic, Trash2, Volume2 } from "lucide-react";
+import { Activity, Award, BarChart3, Calendar, ChevronRight, Loader2, Mic, Trash2, Volume2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { NewAnalysisHistoryItem } from "./RecentAnalysis";
 
 export const AnalysisCard: React.FC<{
     analysis: NewAnalysisHistoryItem;
-    onDelete?: (requestId: string) => void;
+    onDelete?: (requestId: string) => Promise<void>;
 }> = ({ analysis, onDelete }) => {
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deleteProgress, setDeleteProgress] = useState(0);
 
     // Extract data directly from new format
     const speechRateScore = analysis.quick_results?.speech_rate_score || 0;
@@ -57,9 +72,32 @@ export const AnalysisCard: React.FC<{
         navigate(`/analyse-report/${analysis.request_id}`)
     };
 
-    const handleDelete = () => {
-        if (onDelete && window.confirm('Are you sure you want to delete this analysis? This action cannot be undone.')) {
-            onDelete(analysis.request_id);
+    const handleDelete = async () => {
+        if (!onDelete) return;
+
+        setIsDeleting(true);
+        setDeleteProgress(0);
+
+        // Simulate progress updates
+        const progressInterval = setInterval(() => {
+            setDeleteProgress(prev => {
+                if (prev >= 90) return prev;
+                return prev + Math.random() * 20;
+            });
+        }, 100);
+
+        try {
+            await onDelete(analysis.request_id);
+            setDeleteProgress(100);
+            // Give a moment to show 100% before component unmounts
+            setTimeout(() => {
+                clearInterval(progressInterval);
+            }, 200);
+        } catch (error) {
+            clearInterval(progressInterval);
+            setIsDeleting(false);
+            setDeleteProgress(0);
+            console.error('Failed to delete analysis:', error);
         }
     };
 
@@ -272,14 +310,52 @@ export const AnalysisCard: React.FC<{
                     <span className="sm:hidden">View Details</span>
                     <span className="hidden sm:inline">View Detailed Analysis</span>
                 </Button>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleDelete}
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50 border-red-200 hover:border-red-300 transition-colors h-8 px-2"
-                >
-                    <Trash2 className="h-4 w-4" />
-                </Button>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            disabled={isDeleting}
+                            className="text-red-500 hover:text-red-700 hover:bg-red-50 border-red-200 hover:border-red-300 transition-colors h-8 px-2 disabled:opacity-50"
+                        >
+                            {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Analysis</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Are you sure you want to delete "{analysis.file_name}"? This action cannot be undone and all analysis data will be permanently removed.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        {isDeleting && (
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between text-sm text-gray-600">
+                                    <span>Deleting analysis...</span>
+                                    <span>{Math.round(deleteProgress)}%</span>
+                                </div>
+                                <Progress value={deleteProgress} className="w-full" />
+                            </div>
+                        )}
+                        <AlertDialogFooter>
+                            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                                onClick={handleDelete}
+                                disabled={isDeleting}
+                                className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+                            >
+                                {isDeleting ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Deleting...
+                                    </>
+                                ) : (
+                                    'Delete'
+                                )}
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </CardFooter>
         </Card>
     );

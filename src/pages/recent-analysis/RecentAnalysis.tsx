@@ -90,14 +90,14 @@ const RecentAnalysisList: React.FC = () => {
         loadAnalysisHistory();
     }, [page]);
 
-    const handleDeleteAnalysis = async (requestId: string) => {
+    const handleDeleteAnalysis = async (requestId: string): Promise<void> => {
         try {
             await deleteAnalysis(requestId);
             // Remove the deleted analysis from the local state
             setAnalysisList(prev => prev.filter(analysis => analysis.request_id !== requestId));
         } catch (error) {
             console.error('Error deleting analysis:', error);
-            alert('Failed to delete analysis. Please try again.');
+            throw new Error('Failed to delete analysis. Please try again.');
         }
     };    // Filter and sort the analysis list
     const filteredAnalysisList = analysisList

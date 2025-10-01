@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { UserInfo } from '@/types/userInfo';
-import { BarChart3, ChevronDown, History, LogIn, LogOut, MessageSquare, Mic, Settings, Sparkles, Target, User } from 'lucide-react';
+import { BarChart3, ChevronDown, History, LogIn, LogOut, MessageSquare, Mic, Settings, Sparkles, Trophy, User, Home, HelpCircle, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -65,9 +65,9 @@ const Header = ({ isAuthenticated = false }) => {
       description: "Analyze your speech patterns"
     },
     {
-      name: "Practice Sessions",
-      path: "/practice-session",
-      icon: Target,
+      name: "Leaderboard",
+      path: "/leaderboard",
+      icon: Trophy,
       description: "Improve with guided practice"
     },
     {
@@ -237,10 +237,139 @@ const Header = ({ isAuthenticated = false }) => {
 
                   {/* Navigation Content */}
                   <div className="flex-1 p-6 space-y-6 overflow-y-auto">
+                    {/* General Navigation */}
+                    <div className="space-y-2">
+                      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                        General
+                      </h3>
+                      {/* Home */}
+                      <Button
+                        variant={isActive("/") ? "default" : "ghost"}
+                        className={`
+                          w-full justify-start p-4 h-auto rounded-xl transition-all duration-300 group
+                          ${isActive("/")
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700'
+                            : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm'
+                          }
+                          animate-fade-in-up
+                        `}
+                        onClick={() => {
+                          navigate("/");
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <div className="flex items-center space-x-4 w-full">
+                          <div className={`
+                            p-2 rounded-lg transition-all duration-200
+                            ${isActive("/")
+                              ? 'bg-white/20'
+                              : 'bg-gray-100 group-hover:bg-blue-100'
+                            }
+                          `}>
+                            <Home className={`
+                              h-5 w-5 transition-colors duration-200
+                              ${isActive("/") ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}
+                            `} />
+                          </div>
+                          <div className="text-left flex-1">
+                            <div className="font-semibold text-sm">Home</div>
+                            <div className={`text-xs mt-0.5 ${isActive("/") ? 'text-blue-100' : 'text-gray-500 group-hover:text-blue-500'}`}>
+                              Dashboard and overview
+                            </div>
+                          </div>
+                          {isActive("/") && (
+                            <div className="h-2 w-2 bg-white rounded-full animate-pulse"></div>
+                          )}
+                        </div>
+                      </Button>
+
+                      {/* Landing Page */}
+                      <Button
+                        variant={isActive("/landing") ? "default" : "ghost"}
+                        className={`
+                          w-full justify-start p-4 h-auto rounded-xl transition-all duration-300 group
+                          ${isActive("/landing")
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700'
+                            : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm'
+                          }
+                          animate-fade-in-up
+                        `}
+                        onClick={() => {
+                          navigate("/landing");
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <div className="flex items-center space-x-4 w-full">
+                          <div className={`
+                            p-2 rounded-lg transition-all duration-200
+                            ${isActive("/landing")
+                              ? 'bg-white/20'
+                              : 'bg-gray-100 group-hover:bg-blue-100'
+                            }
+                          `}>
+                            <Zap className={`
+                              h-5 w-5 transition-colors duration-200
+                              ${isActive("/landing") ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}
+                            `} />
+                          </div>
+                          <div className="text-left flex-1">
+                            <div className="font-semibold text-sm">Landing Page</div>
+                            <div className={`text-xs mt-0.5 ${isActive("/landing") ? 'text-blue-100' : 'text-gray-500 group-hover:text-blue-500'}`}>
+                              Learn about SpeakSmart
+                            </div>
+                          </div>
+                          {isActive("/landing") && (
+                            <div className="h-2 w-2 bg-white rounded-full animate-pulse"></div>
+                          )}
+                        </div>
+                      </Button>
+
+                      {/* FAQ */}
+                      <Button
+                        variant={isActive("/faq") ? "default" : "ghost"}
+                        className={`
+                          w-full justify-start p-4 h-auto rounded-xl transition-all duration-300 group
+                          ${isActive("/faq")
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700'
+                            : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm'
+                          }
+                          animate-fade-in-up
+                        `}
+                        onClick={() => {
+                          navigate("/faq");
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <div className="flex items-center space-x-4 w-full">
+                          <div className={`
+                            p-2 rounded-lg transition-all duration-200
+                            ${isActive("/faq")
+                              ? 'bg-white/20'
+                              : 'bg-gray-100 group-hover:bg-blue-100'
+                            }
+                          `}>
+                            <HelpCircle className={`
+                              h-5 w-5 transition-colors duration-200
+                              ${isActive("/faq") ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}
+                            `} />
+                          </div>
+                          <div className="text-left flex-1">
+                            <div className="font-semibold text-sm">FAQ</div>
+                            <div className={`text-xs mt-0.5 ${isActive("/faq") ? 'text-blue-100' : 'text-gray-500 group-hover:text-blue-500'}`}>
+                              How scores are calculated
+                            </div>
+                          </div>
+                          {isActive("/faq") && (
+                            <div className="h-2 w-2 bg-white rounded-full animate-pulse"></div>
+                          )}
+                        </div>
+                      </Button>
+                    </div>
+
                     {/* Main Navigation */}
                     <div className="space-y-2">
                       <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                        Navigation
+                        Features
                       </h3>
                       {navigationLinks.map((link, index) => {
                         const Icon = link.icon;
@@ -484,6 +613,39 @@ const Header = ({ isAuthenticated = false }) => {
                         </div>
                       </div>
                     </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="my-2" />
+                    <DropdownMenuGroup className="space-y-1">
+                      <DropdownMenuItem
+                        onClick={() => navigate("/")}
+                        className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors duration-200"
+                      >
+                        <Home size={18} className="text-gray-500" />
+                        <div>
+                          <div className="font-medium text-gray-900">Home</div>
+                          <div className="text-xs text-gray-500">Dashboard and overview</div>
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => navigate("/landing")}
+                        className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors duration-200"
+                      >
+                        <Zap size={18} className="text-gray-500" />
+                        <div>
+                          <div className="font-medium text-gray-900">Landing Page</div>
+                          <div className="text-xs text-gray-500">Learn about SpeakSmart</div>
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => navigate("/faq")}
+                        className="flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors duration-200"
+                      >
+                        <HelpCircle size={18} className="text-gray-500" />
+                        <div>
+                          <div className="font-medium text-gray-900">FAQ</div>
+                          <div className="text-xs text-gray-500">How scores are calculated</div>
+                        </div>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
                     <DropdownMenuSeparator className="my-2" />
                     <DropdownMenuGroup className="space-y-1">
                       <DropdownMenuItem

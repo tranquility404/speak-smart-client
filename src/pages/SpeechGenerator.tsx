@@ -61,15 +61,29 @@ const SpeechGenerator: React.FC = () => {
         <p className="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base hidden sm:block">Improve your public speaking skills with AI-generated topics and real-time voice analysis</p>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-        <div className="xl:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <Card className="shadow-md border-slate-200 h-full pt-0">
+            <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b rounded-sm px-3 sm:px-6 py-3 sm:py-4 pt-4">
+              <CardTitle className="text-lg sm:text-xl text-slate-800">Voice Analyzer</CardTitle>
+              <CardDescription className="text-slate-600 text-sm">
+                Record and analyze your speech delivery
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4">
+              <VoiceAnalyzer />
+            </CardContent>
+          </Card>
+        </div>
+
+        <div>
           <Card className="shadow-md border-slate-200 h-full pt-0">
             <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b rounded-sm px-3 sm:px-6 py-3 sm:py-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                 <div>
-                  <CardTitle className="text-lg sm:text-xl text-slate-800">Speech Generator</CardTitle>
-                  <CardDescription className="text-slate-600 text-sm hidden sm:block">
-                    Generate a speech on any topic and practice your delivery
+                  <CardTitle className="text-lg sm:text-xl text-slate-800">Need something to say?</CardTitle>
+                  <CardDescription className="text-slate-600 text-sm sm:block">
+                    Generate a speech and practice your delivery
                   </CardDescription>
                 </div>
                 <Button
@@ -133,7 +147,7 @@ const SpeechGenerator: React.FC = () => {
                       <div className="bg-blue-100 p-3 sm:p-4 rounded-full mb-3 sm:mb-4">
                         <Volume2 className="h-6 w-6 sm:h-8 sm:w-8 text-blue-700" />
                       </div>
-                      <h3 className="text-base sm:text-lg font-medium text-slate-800 mb-2">No topics generated yet</h3>
+                      <h3 className="text-base sm:text-lg font-medium text-slate-800 mb-2">Need something to say?</h3>
                       <p className="text-slate-600 mb-4 sm:mb-6 max-w-md text-sm sm:text-base px-4 sm:px-0">Click the "Get Topics" button to generate random speech topics and start practicing</p>
                       <Button
                         onClick={fetchRandomTopics}
@@ -204,20 +218,6 @@ const SpeechGenerator: React.FC = () => {
                 )}
               </CardFooter>
             </Tabs>
-          </Card>
-        </div>
-
-        <div className="xl:col-span-1">
-          <Card className="shadow-md border-slate-200 h-full pt-0">
-            <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 border-b px-3 sm:px-6 py-3 sm:py-4 rounded-sm">
-              <CardTitle className="text-lg sm:text-xl text-slate-800">Voice Analyzer</CardTitle>
-              <CardDescription className="text-slate-600 text-sm hidden sm:block">
-                Record and analyze your speech delivery
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-3 sm:p-4">
-              <VoiceAnalyzer />
-            </CardContent>
           </Card>
         </div>
       </div>

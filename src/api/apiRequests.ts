@@ -97,3 +97,7 @@ export function transcribeAudio(formData: any) {
     }
   });
 }
+
+export function getLeaderboard() {
+  return authApiClient.get("/users/leaderboard");
+}

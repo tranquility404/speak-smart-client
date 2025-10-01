@@ -40,7 +40,7 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://speak-smart.app/" />
+  <meta property="og:url" content="https://speak-smart.app" />
   <meta property="og:title" content="SpeakSmart - AI-Powered Speech Analysis Platform" />
   <meta property="og:description"
     content="Transform your speaking skills with AI-powered voice analysis. Get instant feedback on speech patterns, improve your presentation skills, and become a confident speaker." />
@@ -52,7 +52,7 @@
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://speak-smart.app/" />
+  <meta property="twitter:url" content="https://speak-smart.app" />
   <meta property="twitter:title" content="SpeakSmart - AI-Powered Speech Analysis" />
   <meta property="twitter:description"
     content="Improve your speaking skills with AI-powered voice analysis. Get detailed feedback and become a confident speaker." />
@@ -114,7 +114,7 @@
   <!-- PWA Service Worker Registration -->
   <script>
     // Register service worker for PWA functionality
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && import.meta.env.PROD) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
           .then((registration) => {

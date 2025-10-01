@@ -228,7 +228,7 @@ export default function BottomSheet({ analysis }: BottomSheetProps) {
                                 {/* Chart Section */}
                                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 sm:p-6 w-full">
                                     <div className="mx-auto">
-                                        {analysis.intonation.chartUrl ? (
+                                        {analysis.intonation.averagePitch > 0 && analysis.intonation.chartUrl ? (
                                             <img
                                                 src={analysis.intonation.chartUrl}
                                                 alt="Intonation Chart"
@@ -238,6 +238,8 @@ export default function BottomSheet({ analysis }: BottomSheetProps) {
                                                     e.currentTarget.style.display = 'none';
                                                 }}
                                             />
+                                        ) : analysis.intonation.averagePitch == 0? (
+                                            <div className="text-center">Not enough data to visualize</div>
                                         ) : (
                                             <div className="flex flex-col items-center py-6 sm:py-12">
                                                 <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-2 border-purple-500 border-t-transparent mb-3 sm:mb-4"></div>
