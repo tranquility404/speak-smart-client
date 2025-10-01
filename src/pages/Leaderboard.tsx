@@ -271,24 +271,101 @@ const Leaderboard: React.FC = () => {
                     {users.length >= 3 && (
                         <div className="mb-8">
                             <h2 className="text-xl sm:text-2xl font-bold text-center mb-6 text-gray-800">🏆 Top Performers</h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                            {/* Mobile: Vertical layout in correct order (1st, 2nd, 3rd) */}
+                            <div className="flex flex-col gap-4 sm:hidden">
                                 {users.slice(0, 3).map((user, index) => (
                                     <Card
                                         key={user._id}
                                         className={`
-                  ${index === 0 ? 'order-2 sm:order-2 transform sm:scale-105' : ''}
-                  ${index === 1 ? 'order-1 sm:order-1' : ''}
-                  ${index === 2 ? 'order-3 sm:order-3' : ''}
-                  ${user.isCurrentUser ? 'ring-2 ring-blue-500' : ''}
-                  hover:shadow-xl transition-all duration-300 overflow-hidden
-                `}
+                                            ${user.isCurrentUser ? 'ring-2 ring-blue-500' : ''}
+                                            ${index === 0 ? 'transform scale-105' : ''}
+                                            hover:shadow-xl transition-all duration-300 overflow-hidden
+                                        `}
                                     >
                                         <div className={`h-2 ${getBadgeColor(user.badge || null)}`}></div>
-                                        <CardContent className="p-4 sm:p-6 text-center">
+                                        <CardContent className="p-4 text-center">
+                                            <div className="flex items-center gap-4">
+                                                {/* Rank Number */}
+                                                <div className="flex-shrink-0">
+                                                    <div className={`
+                                                        w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg
+                                                        ${index === 0 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : ''}
+                                                        ${index === 1 ? 'bg-gradient-to-r from-gray-400 to-gray-600' : ''}
+                                                        ${index === 2 ? 'bg-gradient-to-r from-amber-600 to-amber-800' : ''}
+                                                    `}>
+                                                        {index === 0 ? '1st' : index === 1 ? '2nd' : '3rd'}
+                                                    </div>
+                                                </div>
+
+                                                {/* User Avatar */}
+                                                <div className="relative flex-shrink-0">
+                                                    <div className="w-14 h-14 rounded-full ring-3 ring-white shadow-lg relative overflow-hidden">
+                                                        {user.profilePicCloudUrl ? (
+                                                            <>
+                                                                <img
+                                                                    src={user.profilePicCloudUrl}
+                                                                    alt={user.name}
+                                                                    className="w-full h-full rounded-full object-cover"
+                                                                    onError={(e) => {
+                                                                        const target = e.target as HTMLImageElement;
+                                                                        target.style.display = 'none';
+                                                                        const fallback = target.nextElementSibling as HTMLElement;
+                                                                        if (fallback) fallback.style.display = 'flex';
+                                                                    }}
+                                                                />
+                                                                <div className={`absolute inset-0 ${getAvatarBgColor(user.name)} text-white flex items-center justify-center text-lg font-bold`} style={{ display: 'none' }}>
+                                                                    {getInitials(user.name)}
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <div className={`w-full h-full ${getAvatarBgColor(user.name)} text-white flex items-center justify-center text-lg font-bold rounded-full`}>
+                                                                {getInitials(user.name)}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="absolute -top-1 -right-1 bg-white rounded-full p-1 shadow-lg">
+                                                        {getRankIcon(user.rank || (index + 1))}
+                                                    </div>
+                                                </div>
+
+                                                {/* User Info */}
+                                                <div className="flex-1 text-left">
+                                                    <h3 className="font-bold text-lg text-gray-800 mb-1">{user.name}</h3>
+                                                    <Badge className={`${getBadgeColor(user.badge || null)} text-white border-0 text-xs`}>
+                                                        {user.badge?.toUpperCase() || 'MEMBER'}
+                                                    </Badge>
+                                                </div>
+
+                                                {/* Stats */}
+                                                <div className="flex-shrink-0 text-right">
+                                                    <div className="text-lg font-bold text-blue-600">{user.points.toLocaleString()}</div>
+                                                    <div className="text-xs text-gray-500">Points</div>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+
+                            {/* Desktop: Podium layout with 2nd-1st-3rd order */}
+                            <div className="hidden sm:grid sm:grid-cols-3 gap-6">
+                                {users.slice(0, 3).map((user, index) => (
+                                    <Card
+                                        key={user._id}
+                                        className={`
+                                            ${index === 0 ? 'order-2 transform scale-105' : ''}
+                                            ${index === 1 ? 'order-1' : ''}
+                                            ${index === 2 ? 'order-3' : ''}
+                                            ${user.isCurrentUser ? 'ring-2 ring-blue-500' : ''}
+                                            hover:shadow-xl transition-all duration-300 overflow-hidden
+                                        `}
+                                    >
+                                        <div className={`h-2 ${getBadgeColor(user.badge || null)}`}></div>
+                                        <CardContent className="p-6 text-center">
                                             <div className="flex flex-col items-center">
-                                                <div className="relative mb-3 sm:mb-4">
+                                                <div className="relative mb-4">
                                                     <div className="relative">
-                                                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full ring-4 ring-white shadow-lg relative overflow-hidden">
+                                                        <div className="w-20 h-20 rounded-full ring-4 ring-white shadow-lg relative overflow-hidden">
                                                             {user.profilePicCloudUrl ? (
                                                                 <>
                                                                     <img
@@ -302,24 +379,24 @@ const Leaderboard: React.FC = () => {
                                                                             if (fallback) fallback.style.display = 'flex';
                                                                         }}
                                                                     />
-                                                                    <div className={`absolute inset-0 ${getAvatarBgColor(user.name)} text-white flex items-center justify-center text-xl sm:text-2xl font-bold`} style={{ display: 'none' }}>
+                                                                    <div className={`absolute inset-0 ${getAvatarBgColor(user.name)} text-white flex items-center justify-center text-2xl font-bold`} style={{ display: 'none' }}>
                                                                         {getInitials(user.name)}
                                                                     </div>
                                                                 </>
                                                             ) : (
-                                                                <div className={`w-full h-full ${getAvatarBgColor(user.name)} text-white flex items-center justify-center text-xl sm:text-2xl font-bold rounded-full`}>
+                                                                <div className={`w-full h-full ${getAvatarBgColor(user.name)} text-white flex items-center justify-center text-2xl font-bold rounded-full`}>
                                                                     {getInitials(user.name)}
                                                                 </div>
                                                             )}
                                                         </div>
                                                         <div className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-lg">
-                                                            {getRankIcon(user.rank || 0)}
+                                                            {getRankIcon(user.rank || (index + 1))}
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <h3 className="font-bold text-lg sm:text-xl text-gray-800 mb-1">{user.name}</h3>
-                                                <Badge className={`${getBadgeColor(user.badge || null)} text-white border-0 mb-3 text-xs sm:text-sm`}>
+                                                <h3 className="font-bold text-xl text-gray-800 mb-1">{user.name}</h3>
+                                                <Badge className={`${getBadgeColor(user.badge || null)} text-white border-0 mb-3 text-sm`}>
                                                     {user.badge?.toUpperCase() || 'MEMBER'}
                                                 </Badge>
 
