@@ -1,19 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getLeaderboard, getMyUserInfo } from '@/api/apiRequests';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getLeaderboard, getMyUserInfo } from '@/api/apiRequests';
-import {
-    Trophy,
-    Medal,
-    Flame,
-    BarChart3,
-    Crown,
-    Star,
-    Filter,
-    RefreshCw,
-    AlertCircle
-} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Select,
     SelectContent,
@@ -21,6 +9,18 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import {
+    AlertCircle,
+    BarChart3,
+    Crown,
+    Filter,
+    Flame,
+    Medal,
+    RefreshCw,
+    Star,
+    Trophy
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 // Updated interface to match API response
 interface LeaderboardUser {
@@ -504,8 +504,7 @@ const Leaderboard: React.FC = () => {
                                                         </div>
                                                         <div>
                                                             <span className="font-medium text-green-600">{user.analysisCount}</span>
-                                                            <span className="text-gray-500 ml-1 hidden sm:inline">analyses</span>
-                                                            <span className="text-gray-500 ml-1 sm:hidden">tests</span>
+                                                            <span className="text-gray-500 ml-1">analyses</span>
                                                         </div>
                                                         <div className="flex items-center">
                                                             <Flame className="h-3 w-3 text-orange-500 mr-1" />
@@ -515,9 +514,9 @@ const Leaderboard: React.FC = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex-shrink-0">
+                                            <div className="flex-shrink-0 relative">
                                                 {user.isCurrentUser && (
-                                                    <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
+                                                    <Badge variant="secondary" className="absolute right-0 bg-blue-100 text-blue-700 text-xs">
                                                         You
                                                     </Badge>
                                                 )}

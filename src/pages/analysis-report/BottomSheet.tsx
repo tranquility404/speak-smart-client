@@ -157,40 +157,45 @@ export default function BottomSheet({ analysis }: BottomSheetProps) {
                                     <span className="sm:hidden">Samples</span>
                                     <span className="hidden sm:inline">Sample Segments</span>
                                 </h4>
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6">
-                                    <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-6">
-                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-2 sm:mb-4">
-                                            <span className="font-semibold text-xs sm:text-base text-gray-800">
-                                                <span className="sm:hidden">Slowest</span>
-                                                <span className="hidden sm:inline">Slowest Segment</span>
-                                            </span>
-                                            <Badge variant="destructive" className="font-semibold text-xs sm:text-sm">
-                                                {Math.floor(analysis.speechRate.slowestSegment.speechRate)} wpm
-                                            </Badge>
-                                        </div>
-                                        <AudioPlayer
-                                            audioStr={analysis.audioUrl}
-                                            startTimestamp={analysis.speechRate.slowestSegment.start}
-                                            endTimestamp={analysis.speechRate.slowestSegment.end}
-                                        />
-                                    </div>
 
-                                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-6">
-                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-2 sm:mb-4">
-                                            <span className="font-semibold text-xs sm:text-base text-gray-800">
-                                                <span className="sm:hidden">Fastest</span>
-                                                <span className="hidden sm:inline">Fastest Segment</span>
-                                            </span>
-                                            <Badge className="bg-green-100 text-green-800 hover:bg-green-200 font-semibold text-xs sm:text-sm">
-                                                {Math.floor(analysis.speechRate.fastestSegment.speechRate)} wpm
-                                            </Badge>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6">
+                                    {analysis.speechRate.slowestSegment && (
+                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-6">
+                                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-2 sm:mb-4">
+                                                <span className="font-semibold text-xs sm:text-base text-gray-800">
+                                                    <span className="sm:hidden">Slowest</span>
+                                                    <span className="hidden sm:inline">Slowest Segment</span>
+                                                </span>
+                                                <Badge variant="destructive" className="font-semibold text-xs sm:text-sm">
+                                                    {Math.floor(analysis.speechRate.slowestSegment.speechRate)} wpm
+                                                </Badge>
+                                            </div>
+                                            <AudioPlayer
+                                                audioStr={analysis.audioUrl}
+                                                startTimestamp={analysis.speechRate.slowestSegment.start}
+                                                endTimestamp={analysis.speechRate.slowestSegment.end}
+                                            />
                                         </div>
-                                        <AudioPlayer
-                                            audioStr={analysis.audioUrl}
-                                            startTimestamp={analysis.speechRate.fastestSegment.start}
-                                            endTimestamp={analysis.speechRate.fastestSegment.end}
-                                        />
-                                    </div>
+                                    )}
+
+                                    {analysis.speechRate.fastestSegment && (
+                                        <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-6">
+                                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-2 sm:mb-4">
+                                                <span className="font-semibold text-xs sm:text-base text-gray-800">
+                                                    <span className="sm:hidden">Fastest</span>
+                                                    <span className="hidden sm:inline">Fastest Segment</span>
+                                                </span>
+                                                <Badge className="bg-green-100 text-green-800 hover:bg-green-200 font-semibold text-xs sm:text-sm">
+                                                    {Math.floor(analysis.speechRate.fastestSegment.speechRate)} wpm
+                                                </Badge>
+                                            </div>
+                                            <AudioPlayer
+                                                audioStr={analysis.audioUrl}
+                                                startTimestamp={analysis.speechRate.fastestSegment.start}
+                                                endTimestamp={analysis.speechRate.fastestSegment.end}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -238,7 +243,7 @@ export default function BottomSheet({ analysis }: BottomSheetProps) {
                                                     e.currentTarget.style.display = 'none';
                                                 }}
                                             />
-                                        ) : analysis.intonation.averagePitch == 0? (
+                                        ) : analysis.intonation.averagePitch == 0 ? (
                                             <div className="text-center">Not enough data to visualize</div>
                                         ) : (
                                             <div className="flex flex-col items-center py-6 sm:py-12">

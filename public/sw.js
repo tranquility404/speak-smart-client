@@ -1,5 +1,5 @@
 // SpeakSmart Service Worker
-const CACHE_NAME = 'speaksmart-v1.0.1';
+const CACHE_NAME = 'speaksmart-v1.0.2';
 const STATIC_CACHE_URLS = [
     '/',
     '/manifest.json',

@@ -237,22 +237,22 @@ const Header = ({ isAuthenticated = false }) => {
 
                   {/* Navigation Content */}
                   <div className="flex-1 p-6 space-y-6 overflow-y-auto">
-                    {/* General Navigation */}
+                    {/* Main Navigation */}
                     <div className="space-y-2">
                       <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                        General
+                        Features
                       </h3>
                       {/* Home */}
                       <Button
                         variant={isActive("/") ? "default" : "ghost"}
                         className={`
-                          w-full justify-start p-4 h-auto rounded-xl transition-all duration-300 group
-                          ${isActive("/")
+                                    w-full justify-start p-4 h-auto rounded-xl transition-all duration-300 group
+                                    ${isActive("/")
                             ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700'
                             : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm'
                           }
-                          animate-fade-in-up
-                        `}
+                                    animate-fade-in-up
+                                  `}
                         onClick={() => {
                           navigate("/");
                           setMobileMenuOpen(false);
@@ -260,16 +260,16 @@ const Header = ({ isAuthenticated = false }) => {
                       >
                         <div className="flex items-center space-x-4 w-full">
                           <div className={`
-                            p-2 rounded-lg transition-all duration-200
-                            ${isActive("/")
+                                      p-2 rounded-lg transition-all duration-200
+                                      ${isActive("/")
                               ? 'bg-white/20'
                               : 'bg-gray-100 group-hover:bg-blue-100'
                             }
-                          `}>
+                                    `}>
                             <Home className={`
-                              h-5 w-5 transition-colors duration-200
-                              ${isActive("/") ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}
-                            `} />
+                                        h-5 w-5 transition-colors duration-200
+                                        ${isActive("/") ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}
+                                      `} />
                           </div>
                           <div className="text-left flex-1">
                             <div className="font-semibold text-sm">Home</div>
@@ -282,6 +282,59 @@ const Header = ({ isAuthenticated = false }) => {
                           )}
                         </div>
                       </Button>
+                      {navigationLinks.map((link, index) => {
+                        const Icon = link.icon;
+                        return (
+                          <Button
+                            key={link.path}
+                            variant={isActive(link.path) ? "default" : "ghost"}
+                            className={`
+                                  w-full justify-start p-4 h-auto rounded-xl transition-all duration-300 group
+                                  ${isActive(link.path)
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700'
+                                : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm'
+                              }
+                                  animate-fade-in-up
+                                `}
+                            style={{ animationDelay: `${index * 100}ms` }}
+                            onClick={() => {
+                              navigate(link.path);
+                              setMobileMenuOpen(false);
+                            }}
+                          >
+                            <div className="flex items-center space-x-4 w-full">
+                              <div className={`
+                                    p-2 rounded-lg transition-all duration-200
+                                    ${isActive(link.path)
+                                  ? 'bg-white/20'
+                                  : 'bg-gray-100 group-hover:bg-blue-100'
+                                }
+                                  `}>
+                                <Icon className={`
+                                      h-5 w-5 transition-colors duration-200
+                                      ${isActive(link.path) ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}
+                                    `} />
+                              </div>
+                              <div className="text-left flex-1">
+                                <div className="font-semibold text-sm">{link.name}</div>
+                                <div className={`text-xs mt-0.5 ${isActive(link.path) ? 'text-blue-100' : 'text-gray-500 group-hover:text-blue-500'}`}>
+                                  {link.description}
+                                </div>
+                              </div>
+                              {isActive(link.path) && (
+                                <div className="h-2 w-2 bg-white rounded-full animate-pulse"></div>
+                              )}
+                            </div>
+                          </Button>
+                        );
+                      })}
+                    </div>
+
+                    {/* General Navigation */}
+                    <div className="space-y-2">
+                      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                        General
+                      </h3>
 
                       {/* Landing Page */}
                       <Button
@@ -366,58 +419,6 @@ const Header = ({ isAuthenticated = false }) => {
                       </Button>
                     </div>
 
-                    {/* Main Navigation */}
-                    <div className="space-y-2">
-                      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                        Features
-                      </h3>
-                      {navigationLinks.map((link, index) => {
-                        const Icon = link.icon;
-                        return (
-                          <Button
-                            key={link.path}
-                            variant={isActive(link.path) ? "default" : "ghost"}
-                            className={`
-                              w-full justify-start p-4 h-auto rounded-xl transition-all duration-300 group
-                              ${isActive(link.path)
-                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700'
-                                : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:shadow-sm'
-                              }
-                              animate-fade-in-up
-                            `}
-                            style={{ animationDelay: `${index * 100}ms` }}
-                            onClick={() => {
-                              navigate(link.path);
-                              setMobileMenuOpen(false);
-                            }}
-                          >
-                            <div className="flex items-center space-x-4 w-full">
-                              <div className={`
-                                p-2 rounded-lg transition-all duration-200
-                                ${isActive(link.path)
-                                  ? 'bg-white/20'
-                                  : 'bg-gray-100 group-hover:bg-blue-100'
-                                }
-                              `}>
-                                <Icon className={`
-                                  h-5 w-5 transition-colors duration-200
-                                  ${isActive(link.path) ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}
-                                `} />
-                              </div>
-                              <div className="text-left flex-1">
-                                <div className="font-semibold text-sm">{link.name}</div>
-                                <div className={`text-xs mt-0.5 ${isActive(link.path) ? 'text-blue-100' : 'text-gray-500 group-hover:text-blue-500'}`}>
-                                  {link.description}
-                                </div>
-                              </div>
-                              {isActive(link.path) && (
-                                <div className="h-2 w-2 bg-white rounded-full animate-pulse"></div>
-                              )}
-                            </div>
-                          </Button>
-                        );
-                      })}
-                    </div>
 
                     {/* User Actions (if authenticated) */}
                     {isAuthenticated && (
@@ -540,7 +541,7 @@ const Header = ({ isAuthenticated = false }) => {
                         <div className="space-y-2">
                           <p className="text-xs text-gray-500">Need assistance?</p>
                           <a
-                            href="https://www.linkedin.com/in/aman-verma403/"
+                            href="https://www.linkedin.com/in/aman-verma403"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors duration-200"
