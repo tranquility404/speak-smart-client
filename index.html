@@ -117,7 +117,10 @@
     // Check if we're in production (not localhost or dev server)
     const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && !window.location.hostname.includes('dev');
 
-    if ('serviceWorker' in navigator && isProduction) {
+    // For testing PWA install prompt, temporarily allow in development
+    const allowDevelopment = false; // Set to false for production
+
+    if ('serviceWorker' in navigator && (isProduction || allowDevelopment)) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
           .then((registration) => {
@@ -159,7 +162,14 @@
       }
 
       // Dispatch custom event that your React app can listen to
+      console.log('Dispatching pwa-installable event');
       window.dispatchEvent(new CustomEvent('pwa-installable', { detail: { prompt: deferredPrompt } }));
+
+      // Add a small delay and try again in case React components aren't ready
+      setTimeout(() => {
+        console.log('Dispatching pwa-installable event (delayed)');
+        window.dispatchEvent(new CustomEvent('pwa-installable', { detail: { prompt: deferredPrompt } }));
+      }, 1000);
     });
 
     window.addEventListener('appinstalled', (evt) => {

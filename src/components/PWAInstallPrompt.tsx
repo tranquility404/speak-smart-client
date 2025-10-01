@@ -26,29 +26,35 @@ const PWAInstallPrompt: React.FC<PWAInstallProps> = ({ className = '' }) => {
         const shouldInstall = urlParams.get('install') === 'true';
 
         // Listen for PWA install availability
-        const handleInstallable = () => {
+        const handleInstallable = (event: any) => {
+            console.log('PWA installable event received:', event);
             setIsInstallable(true);
             // Show prompt immediately if came from install link, otherwise wait 3 seconds
             if (shouldInstall) {
+                console.log('Showing PWA prompt immediately (from install link)');
                 setShowPrompt(true);
                 // Remove the parameter from URL for cleaner experience
                 const newUrl = window.location.href.replace(/[?&]install=true/, '');
                 window.history.replaceState({}, document.title, newUrl);
             } else {
+                console.log('Showing PWA prompt after 3 seconds');
                 setTimeout(() => setShowPrompt(true), 3000);
             }
         };
 
         const handleInstalled = () => {
+            console.log('PWA installed event received');
             setIsInstalled(true);
             setIsInstallable(false);
             setShowPrompt(false);
         };
 
+        console.log('PWAInstallPrompt: Adding event listeners');
         window.addEventListener('pwa-installable', handleInstallable as EventListener);
         window.addEventListener('pwa-installed', handleInstalled);
 
         return () => {
+            console.log('PWAInstallPrompt: Removing event listeners');
             window.removeEventListener('pwa-installable', handleInstallable as EventListener);
             window.removeEventListener('pwa-installed', handleInstalled);
         };
@@ -66,6 +72,9 @@ const PWAInstallPrompt: React.FC<PWAInstallProps> = ({ className = '' }) => {
         // Don't show again for this session
         sessionStorage.setItem('pwa-prompt-dismissed', 'true');
     };
+
+    // Debug logging
+    console.log('PWAInstallPrompt render:', { isInstalled, isInstallable, showPrompt });
 
     // Don't show if already installed or not installable
     if (isInstalled || !isInstallable) {
